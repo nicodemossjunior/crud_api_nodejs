@@ -49,6 +49,27 @@ app.patch('/account/:id', async (req, res) => {
   }
 });
 
+app.put('/account/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    
+    // quando não precisa retornar o documento após a atualização
+    // accountModel.findByIdAndUpdate({_id: id}, req.body);
+
+    // passando o parâmetro 'new: true' é retornado o documento atualizado
+    const account = await accountModel.findByIdAndUpdate(
+      { _id: id }, 
+      req.body, 
+      { new: true }
+    );
+
+    res.send(account);
+
+  } catch (error) {
+    res.status(500).send({"error": error.message});
+  }
+});
+
 app.delete('/account/:id', async (req,res) => {
   try {
     const id = req.params.id;
